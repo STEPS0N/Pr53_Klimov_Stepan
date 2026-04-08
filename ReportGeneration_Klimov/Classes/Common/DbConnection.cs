@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Pomelo.EntityFrameworkCore.MySql;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using Pomelo.EntityFrameworkCore.MySql.Storage;
 using ReportGeneration_Klimov.Models;
+using System;
+using System.Windows;
+
 
 namespace ReportGeneration_Klimov.Classes.Common
 {
@@ -32,7 +31,8 @@ namespace ReportGeneration_Klimov.Classes.Common
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseMySql("server=localhost;port=3307;database=Stud;uid=root;pwd=;", new ServerVersion(new Version(8, 0, 11)));
+            optionsBuilder.UseMySql("server=localhost;port=3307;database=Stud;uid=root;pwd=;",
+                mySqlOptions => mySqlOptions.ServerVersion("8.0.11-mysql"));
         }
     }
 }
