@@ -19,7 +19,7 @@ namespace ReportGeneration_Klimov.Pages
         {
             InitializeComponent();
             CreateGroupUI();
-            CreateStudents();
+            CreateStudents(connection.Students.ToList());
         }
 
         public void CreateGroupUI()
@@ -70,7 +70,11 @@ namespace ReportGeneration_Klimov.Pages
 
         private void ReportGeneration(object sender, RoutedEventArgs e)
         {
-
+            if (cbGroups.SelectedIndex != cbGroups.Items.Count - 1)
+            {
+                int IdGroup = connection.Groups.ToList().Find(x => x.Name == cbGroups.SelectedItem).Id;
+                Classes.Common.Report.Group(IdGroup, this);
+            }
         }
     }
 }

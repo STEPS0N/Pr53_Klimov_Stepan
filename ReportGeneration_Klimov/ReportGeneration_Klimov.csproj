@@ -165,6 +165,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Classes\Common\DbConnection.cs" />
+    <Compile Include="Classes\Common\Report.cs" />
     <Compile Include="Items\Student.xaml.cs">
       <DependentUpon>Student.xaml</DependentUpon>
     </Compile>
@@ -212,7 +213,9 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Images\journal.sql" />
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\ic_student.png" />
   </ItemGroup>
