@@ -1,12 +1,13 @@
-﻿using Microsoft.Win32;
+﻿using Microsoft.Office.Interop.Excel;
+using Microsoft.Win32;
+using ReportGeneration_Klimov.Items;
 using ReportGeneration_Klimov.Models;
 using ReportGeneration_Klimov.Pages;
-using Excel = Microsoft.Office.Interop.Excel;
-using System.Linq;
 using System;
-using Microsoft.Office.Interop.Excel;
 using System.Collections.Generic;
-using ReportGeneration_Klimov.Items;
+using System.Linq;
+using System.Windows.Media;
+using Excel = Microsoft.Office.Interop.Excel;
 
 namespace ReportGeneration_Klimov.Classes.Common
 {
@@ -59,6 +60,11 @@ namespace ReportGeneration_Klimov.Classes.Common
                     Styles(Worksheet.Cells[4, 5], 12, XlHAlign.xlHAlignCenter, true);
 
                     int Height = 5;
+
+                    int bestRow = -1;
+                    int bestDebts = 999999;
+                    int bestAbsences = 999999;
+
                     List<Models.Student> Students = Main.connection.Students.ToList().FindAll(x => x.IdGroup == IdGroup);
                     foreach (Models.Student Student in Students)
                     {
@@ -94,6 +100,16 @@ namespace ReportGeneration_Klimov.Classes.Common
                                     else
                                         LateCount++;
                                 }
+
+                                int totalDebts = PracticeCount + TheoryCount;
+                                int totalAbsences = AbsenteeismCount + LateCount;
+
+                                if (totalDebts < bestDebts || (totalDebts == bestDebts && totalAbsences <= bestAbsences))
+                                {
+                                    bestDebts = totalDebts;
+                                    bestAbsences = totalAbsences;
+                                    bestRow = Height;
+                                }
                             }
                         }
 
@@ -114,6 +130,13 @@ namespace ReportGeneration_Klimov.Classes.Common
 
                         Height++;
                     }
+
+                    if (bestRow != -1)
+                    {
+                        Worksheet.Range[$"A{bestRow}:E{bestRow}"].Interior.Color = 6551089;
+                        Worksheet.Range[$"A{bestRow}:E{bestRow}"].Font.Bold = true;
+                    }
+
                     Workbook.SaveAs(SFD.FileName);
                     Workbook.Close();
 
